@@ -1,0 +1,15 @@
+upload_data: Subir PDF
+dataset: Pdf
+options: Opciones
+viz: Texto
+upload_lb: Escoge archivo PDF
+upload_bt_lb: Examinar...
+upload_pl: Ningún archivo seleccionado
+page: "Página "
+results: Resultados como
+search_lb: Buscar 
+search_pl: Buscar en el pdf
+show: "Mostrar texto de:"
+all: Todas las páginas
+selected: Página seleccionadas
+download_file: Descargar archivo

@@ -1,0 +1,15 @@
+upload_data: Upload pdf
+dataset: Pdf
+options: Options
+viz: Text
+upload_lb: Choose PDF file
+upload_bt_lb: Browse...
+upload_pl: No file selected
+page: "Page "
+results: Results as
+search_lb: Search 
+search_pl: Search in the pdf
+show: "Show text of:"
+all: All pages
+selected: Selected pages
+download_file: Download file

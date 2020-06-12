@@ -1,0 +1,12 @@
+name: app_extract-pdf-text
+title: app_extract-pdf-text
+username:
+account: randommonkey
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2446982
+bundleId: 3262321
+url: https://randommonkey.shinyapps.io/app_extract-pdf-text/
+when: 1591982466.1363
+asMultiple: FALSE
+asStatic: FALSE

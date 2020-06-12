@@ -1,0 +1,6 @@
+results:
+  label: results
+  inputs:
+    - show
+    - search
+    #- language

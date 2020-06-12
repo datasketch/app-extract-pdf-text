@@ -1,0 +1,15 @@
+search:
+  show: true
+  input_type: textInput
+  input_params:
+    label: search_lb
+    placeholder: search_pl
+show:
+  show: true
+  input_type: radioButtons
+  input_params:
+    label: show
+    choices:
+     - all
+     - selected
+  update_param: selected
