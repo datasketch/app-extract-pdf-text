@@ -13,3 +13,4 @@ show: "Mostrar texto de:"
 all: Todas las páginas
 selected: Página seleccionadas
 download_file: Descargar archivo
+download: Descargar

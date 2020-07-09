@@ -13,3 +13,4 @@ show: "Show text of:"
 all: All pages
 selected: Selected pages
 download_file: Download file
+download: Download

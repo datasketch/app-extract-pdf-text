@@ -6,11 +6,8 @@ library(V8)
 library(dsmodules)
 library(pdftools)
 library(magick)
-library(pander)
-library(knitr)
+library(shinycustomloader)
 
-# ¿en buttonImage sólo se puede si es de imágenes guardadas en www?
-# no se pueden seleccionar múltiples
 
 
 ui <- panelsPage(useShi18ny(),
@@ -28,11 +25,9 @@ ui <- panelsPage(useShi18ny(),
                        color = "chardonnay",
                        can_collapse = FALSE,
                        body = div(langSelectorInput("lang", position = "fixed"),
-                                  uiOutput("result"),
-                                  shinypanels::modal(id = "download",
-                                                     title = ui_("download_file"),
-                                                     uiOutput("modal"))),
-                       footer = shinypanels::modalButton(label = "Download file", modal_id = "download")))
+                                  uiOutput("download"),
+                                  br(),
+                                  withLoader(uiOutput("result"), type = "image", loader = "loading_gris.gif"))))
 
 
 
@@ -125,17 +120,18 @@ server <- function(input, output, session) {
                      tooltips = paste0(i_("page", lang()), 1:td$pages))
   })
   
+  output$download <- renderUI({
+    lb <- i_("download_file", lang())
+    dw <- i_("download", lang())
+    downloadTextUI("download_data_button", label = lb, text = dw, formats = c("txt", "docx", "html"), display = "dropdown", dropdownWidth = 160)
+  })
+  
   output$result <- renderUI({
     lapply(c("txt", "docx", "html"), function(z) {
       buttonId <- paste0("download_data_button-DownloadTxt", z)
       session$sendCustomMessage("setButtonState", c("none", buttonId)) 
     })
     HTML(paste0("<div style = 'box-shadow: -3px 3px 5px 2px rgba(0, 0, 0, 0.06); max-width: 1000px; padding: 12px 10px;'>", td$text, "</div>"))
-  })
-  
-  output$modal <- renderUI({
-    dw <- i_("download", lang())
-    downloadTextUI("download_data_button", dw, c("txt", "docx", "html"))
   })
   
   callModule(downloadText, "download_data_button",  text = reactive(td$text), formats = c("txt", "docx", "html"))
