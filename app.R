@@ -22,11 +22,10 @@ ui <- panelsPage(useShi18ny(),
                        width = 250,
                        body = uiOutput("controls")),
                  panel(title = ui_("viz"),
+                       title_plugin = uiOutput("download"),
                        color = "chardonnay",
                        can_collapse = FALSE,
                        body = div(langSelectorInput("lang", position = "fixed"),
-                                  uiOutput("download"),
-                                  br(),
                                   withLoader(uiOutput("result"), type = "image", loader = "loading_gris.gif"))))
 
 

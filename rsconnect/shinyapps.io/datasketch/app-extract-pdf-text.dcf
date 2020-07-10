@@ -1,0 +1,12 @@
+name: app-extract-pdf-text
+title: app-extract-pdf-text
+username:
+account: datasketch
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2555021
+bundleId: 3374315
+url: https://datasketch.shinyapps.io/app-extract-pdf-text/
+when: 1594344189.74392
+asMultiple: FALSE
+asStatic: FALSE
