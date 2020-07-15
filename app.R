@@ -11,6 +11,7 @@ library(shinycustomloader)
 
 
 ui <- panelsPage(useShi18ny(),
+                 showDebug(),
                  panel(title = ui_("upload_data"),
                        width = 200,
                        body = uiOutput("text_input")),
