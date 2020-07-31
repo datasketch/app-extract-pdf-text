@@ -53,30 +53,37 @@ server <- function(input, output, session) {
   })
   
   td <- reactiveValues()
-
+  
   # pdf_upload <- reactive({
   observe({
     req(input$upload)
-    td$text_up <- pdf_text(input$upload$datapath)
-    td$text <- td$text_up
-    d0 <- image_read_pdf(input$upload$datapath, density = 50)
-    td$pages <- length(d0)
-    d1 <- "der2r23r" # nombre aleatorio
-    # d1 <- tempdir()
-    d2 <- substr(Sys.time(), 12, 19)
-    lapply(paste0("www/", d1, "/", list.files(paste0("www/", d1))), file.remove)
-    # unlink(paste0("www/", d1, "/"), recursive = TRUE)
-    if (dir.exists("www")) {
-      dir.create(paste0("www/", d1))
+    safe_pdf <- purrr::safely(pdf_text)
+    res <- safe_pdf(input$upload$datapath)
+    td$text_up <- res
+    if (!is.null(res$result)) {
+      td$text <- td$text_up$result
+      d0 <- image_read_pdf(input$upload$datapath, density = 50)
+      td$pages <- length(d0)
+      d1 <- "der2r23r" # nombre aleatorio
+      # d1 <- tempdir()
+      d2 <- substr(Sys.time(), 12, 19)
+      lapply(paste0("www/", d1, "/", list.files(paste0("www/", d1))), file.remove)
+      # unlink(paste0("www/", d1, "/"), recursive = TRUE)
+      if (dir.exists("www")) {
+        dir.create(paste0("www/", d1))
+      } else {
+        dir.create("www")
+        dir.create(paste0("www/", d1))
+      }
+      i0 <- seq_along(d0)
+      i1 <- lapply(i0, function(e) {
+        image_write(d0[e], paste0("www/", d1, "/", e, "_", d2,".png"),  )
+      })
+      td$dir <- d2
     } else {
-      dir.create("www")
-      dir.create(paste0("www/", d1))
+      td$dir <- NULL
+      td$text <- infomessage(p(res$error$message))
     }
-    i0 <- seq_along(d0)
-    i1 <- lapply(i0, function(e) {
-      image_write(d0[e], paste0("www/", d1, "/", e, "_", d2,".png"),  )
-    })
-    td$dir <- d2
   })
   
   # deleting temporary file when session ends
@@ -86,7 +93,7 @@ server <- function(input, output, session) {
   
   observeEvent(list(input$show, input$search, input$pdf_pages, input$upload), {
     req(input$show, input$pdf_pages)
-    t0 <- td$text_up
+    t0 <- td$text_up$result
     if (!grepl("All pages", input$show)) {
       nm <- as.numeric(strsplit(input$pdf_pages, "_")[[1]][1])
       t0 <- t0[nm]
@@ -123,18 +130,21 @@ server <- function(input, output, session) {
   output$download <- renderUI({
     lb <- i_("download_file", lang())
     dw <- i_("download", lang())
-    downloadTextUI("download_data_button", label = lb, text = dw, formats = c("txt", "docx", "html"), display = "dropdown", dropdownWidth = 160)
+    gl <- i_("get_link", lang())
+    downloadTextUI("download_data_button", dropdownLabel = lb, text = dw, formats = c("link", "txt", "docx", "html"),
+                   display = "dropdown", dropdownWidth = 160, getLinkLabel = gl, modalTitle = gl)
   })
   
   output$result <- renderUI({
-    lapply(c("txt", "docx", "html"), function(z) {
-      buttonId <- paste0("download_data_button-DownloadTxt", z)
-      session$sendCustomMessage("setButtonState", c("none", buttonId)) 
-    })
-    HTML(paste0("<div style = 'box-shadow: -3px 3px 5px 2px rgba(0, 0, 0, 0.06); max-width: 1000px; padding: 12px 10px;'>", td$text, "</div>"))
+    req(td$text)
+    if (grepl("<div class=\"infomessage warning \">", td$text)) {
+      td$text
+    } else {
+      HTML(paste0("<div style = 'box-shadow: -3px 3px 5px 2px rgba(0, 0, 0, 0.06); max-width: 1000px; padding: 12px 10px;'>", td$text, "</div>"))
+    }
   })
   
-  callModule(downloadText, "download_data_button",  text = reactive(td$text), formats = c("txt", "docx", "html"))
+  callModule(downloadText, "download_data_button",  text = reactive(td$text), formats = c("link", "txt", "docx", "html"))
   
 }
 

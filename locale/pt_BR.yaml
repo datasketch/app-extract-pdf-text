@@ -14,3 +14,4 @@ all: Todas as páginas
 selected: Página selecionadas
 download_file: Baixar arquivo
 download: Baixar
+get_link: Obter link
