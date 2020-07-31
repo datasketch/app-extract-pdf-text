@@ -5,8 +5,8 @@ account: datasketch
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 2555021
-bundleId: 3393629
+bundleId: 3460813
 url: https://datasketch.shinyapps.io/app-extract-pdf-text/
-when: 1594784373.35977
+when: 1596226574.64902
 asMultiple: FALSE
 asStatic: FALSE
